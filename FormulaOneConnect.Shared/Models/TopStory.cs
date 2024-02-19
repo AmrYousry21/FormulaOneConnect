@@ -1,7 +1,13 @@
 ﻿
-namespace FormulaOneConnect.Data.Models;
+namespace FormulaOneConnect.Shared.Models;
 
-public class TopStories
+public class TopStoryResult 
+{
+    public object Meta {  get; set; }
+    public List<TopStory> Data { get; set; }
+}
+
+public class TopStory
 {
     public string Uuid { get; set; }
     public string Title { get; set; }

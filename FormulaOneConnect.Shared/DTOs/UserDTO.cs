@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FormulaOneConnect.Shared.DTOs;
 
-public class UserDTO
+public class UserDto
 {
     [Required]
     [MaxLength(50)]
