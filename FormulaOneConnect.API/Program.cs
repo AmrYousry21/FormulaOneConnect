@@ -14,6 +14,7 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddHttpClient();
 
 // Add repos to the container
 builder.Services.AddScoped<IUserRepository, UserRepository>();
