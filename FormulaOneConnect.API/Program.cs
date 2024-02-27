@@ -19,7 +19,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddHttpClient("FormulaOneConnectClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7144/");
+    client.BaseAddress = new Uri("https://formulaoneconnect-5428e98fc39c.herokuapp.com/");
 });
 builder.Services.AddControllers();
 
