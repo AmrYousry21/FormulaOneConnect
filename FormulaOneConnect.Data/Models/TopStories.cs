@@ -17,3 +17,17 @@ public class TopStories
     public object Relevance_score { get; set; }
     public string Locale { get; set; }
 }
+
+public class Meta
+{
+    public int Found { get; set; }
+    public int Returned { get; set; }
+    public int Limit { get; set; }
+    public int Page { get; set; }
+}
+
+public class TopStoryResult
+{
+    public Meta Meta { get; set; }
+    public List<TopStories> Data { get; set; }
+}

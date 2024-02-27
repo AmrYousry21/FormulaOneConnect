@@ -1,7 +1,9 @@
 ﻿@page "/"
 
 @using FormulaOneConnect.Client.Components
+@using FormulaOneConnect.Data.Models;
 @using FormulaOneConnect.Shared.Models
+@using System.Net.Http;
 
 <PageTitle>Index</PageTitle>
 
@@ -88,19 +90,19 @@ else
 }
 
 @code {
-    [Inject] private HttpClient _httpClient { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private HttpClient _httpClient { get; set; }
 
     private bool loading = true;
     private bool loadingStandings = false;
     private int standingsYear = DateTime.Now.Year - 1;
-    private List<TopStory> topStories = new();
+    private List<TopStories> topStories = new();
     private List<Standings> standings = new();
     private List<DriverStanding> currentDriverStandings = new();
 
     protected override async Task OnInitializedAsync()
-    {
-        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("api/News/TopStories");
+    {            
+        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("News/TopStories");
         if (topStoryResult != null) topStories = topStoryResult.Data;
 
         await GetStandings(standingsYear);

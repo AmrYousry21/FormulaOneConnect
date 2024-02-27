@@ -17,7 +17,10 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 // Add repos to the container
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddHttpClient("FormulaOneConnectClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7144/");
+});
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

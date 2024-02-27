@@ -12,10 +12,6 @@ public class League
     [Required]
     public Guid Id { get; set; }
 
-    [Required] 
-
-
-    [Required]
     [MaxLength(50)]
     public string LeagueName { get; set; } = default!;
 
