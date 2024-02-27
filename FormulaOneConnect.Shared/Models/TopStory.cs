@@ -1,7 +1,7 @@
 ﻿
-namespace FormulaOneConnect.Data.Models;
+namespace FormulaOneConnect.Shared.Models;
 
-public class TopStories
+public class TopStory
 {
     public string Uuid { get; set; }
     public string Title { get; set; }
@@ -29,5 +29,5 @@ public class Meta
 public class TopStoryResult
 {
     public Meta Meta { get; set; }
-    public List<TopStories> Data { get; set; }
+    public List<TopStory> Data { get; set; }
 }

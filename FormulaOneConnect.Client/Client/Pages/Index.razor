@@ -2,8 +2,8 @@
 
 @using FormulaOneConnect.Client.Components
 @using FormulaOneConnect.Data.Models;
-@using FormulaOneConnect.Shared.Models
 @using System.Net.Http;
+@using FormulaOneConnect.Shared.Models;
 
 <PageTitle>Index</PageTitle>
 
@@ -96,7 +96,7 @@ else
     private bool loading = true;
     private bool loadingStandings = false;
     private int standingsYear = DateTime.Now.Year - 1;
-    private List<TopStories> topStories = new();
+    private List<TopStory> topStories = new();
     private List<Standings> standings = new();
     private List<DriverStanding> currentDriverStandings = new();
 
