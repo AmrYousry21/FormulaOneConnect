@@ -1,0 +1,96 @@
+﻿body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+
+.banner {
+    height: 400px;
+   padding-top:50px;
+}
+
+.card-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
+.card {
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 550px !important;
+}
+
+.GamesCard-body
+{
+    min-width:300px;
+    min-height:100%;
+}
+
+
+.card h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 90px;
+    height: 12px;
+    --c: #000 50%,#0000 0;
+    background: linear-gradient(90deg,var(--c)) 0 0%, linear-gradient(-90deg,var(--c)) 0 50%, linear-gradient(90deg,var(--c)) 0 100%;
+    background-size: 8px calc(100%/3);
+    background-repeat: repeat-x;
+    animation: l8 .25s infinite linear;
+}
+
+@keyframes l8 {
+    100% {
+        background-position: -8px 0%,-8px 50%,-8px 100%
+    }
+}
+
+,row{
+    max-height:400px;
+}
+
+.carousel
+{
+    width:50px;
+    height: 100px;
+}
+
+.standing-pill:hover {
+    background: #f73434 !important;
+    color: white;
+}
+
+.standing-pill p
+{
+    height:30px;
+}
+
+.standing-title {
+    border-top: solid;
+    border-left: solid;
+    border-right: solid;
+    border-color: #ef192e;
+}
+

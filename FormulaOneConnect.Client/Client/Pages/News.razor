@@ -1,0 +1,57 @@
+﻿@page "/News"
+
+@using FormulaOneConnect.Client.Components
+@using FormulaOneConnect.Shared.Models
+
+<PageTitle>News</PageTitle>
+
+@if (loading)
+{
+    <div class="loader position-absolute top-50 start-50"></div>
+}
+else
+{
+    <section class="my-3">
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                <div class="row">
+                    @foreach (var story in topStories)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-4">
+                            <div class="card" @onclick="() => NavigateToArticle(story.Url)" style="cursor: pointer;">
+                                <img class="card-img-top" src="@story.Image_url" alt="@story.Title">
+                                <div class="card-body">
+                                    <h4 class="card-title p-2">@story.Title</h4>
+                                    <p class="card-text p-2">@story.Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    [Inject] private HttpClient _httpClient { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
+
+    private bool loading = true;
+    private List<TopStory> topStories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("api/News/TopStories");
+        if (topStoryResult != null) topStories = topStoryResult.Data;
+
+
+        loading = false;
+    }
+
+    private void NavigateToArticle(string url)
+    {
+        _navigationManager.NavigateTo(url);
+    }
+
+}

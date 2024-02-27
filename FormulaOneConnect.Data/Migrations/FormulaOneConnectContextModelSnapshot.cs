@@ -21,9 +21,9 @@ namespace FormulaOneConnect.Data.Migrations
 
             modelBuilder.Entity("FormulaOneConnect.Data.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .HasMaxLength(100)
@@ -32,9 +32,6 @@ namespace FormulaOneConnect.Data.Migrations
                     b.Property<string>("City")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
-
-                    b.Property<Guid>("CreateUserId")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -62,9 +59,6 @@ namespace FormulaOneConnect.Data.Migrations
                     b.Property<string>("State")
                         .HasMaxLength(2)
                         .HasColumnType("varchar(2)");
-
-                    b.Property<Guid>("UpdateUserId")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");

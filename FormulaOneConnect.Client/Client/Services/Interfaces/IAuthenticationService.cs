@@ -1,8 +1,10 @@
 ﻿using FormulaOneConnect.Shared.DTOs;
+using FormulaOneConnect.Shared.Models;
 
 namespace FormulaOneConnect.Client.Services.Interfaces;
 
 public interface IAuthenticationService
 {
-    Task<HttpResponseMessage> Login(LoginDto loginDto);
+    Task<Result> Login(LoginDto loginDto);
+    Task Logout();
 }

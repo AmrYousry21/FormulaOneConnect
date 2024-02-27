@@ -43,7 +43,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(policy =>
 {
-    policy.AddPolicy("Policy_Name", builder => builder.AllowAnyOrigin());
+    policy.AddPolicy("F1CorsPolicy", policy =>
+    {
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+    });
 });
 
 // Configure the HTTP request pipeline.
@@ -61,7 +67,7 @@ else
     app.UseHttpsRedirection();
 }
 
-app.UseCors("Policy_Name");
+app.UseCors("F1CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 

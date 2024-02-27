@@ -15,11 +15,11 @@ public class AuthenticationService : IAuthenticationService
         _configuration = configuration;
     }
 
-    public string GenerateToken(Guid userId, string email, string userRole)
+    public string GenerateToken(int userId, string email, string userRole)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Name, email),
             new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.Role, userRole)
         };

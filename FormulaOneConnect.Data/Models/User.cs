@@ -10,20 +10,18 @@ public class User : MetaData
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Required]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(50)]
-    public string FirstName { get; set; } = default!;
-
+    public string FirstName { get; set; } 
     [Required]
     [MaxLength(50)]
-    public string LastName { get; set; } = default!;
-
+    public string LastName { get; set; } 
     [Required]
     [MaxLength(50)]
     [EmailAddress]
-    public string Email { get; set; } = default!;
+    public string Email { get; set; }
 
     [MaxLength(100)]
     public string? Address { get; set; }
@@ -40,7 +38,7 @@ public class User : MetaData
     [Required]
     [MinLength(8)]
     [MaxLength(200)]
-    public string Password { get; set; } = default!;
+    public string Password { get; set; }
 
     [Required]
     public UserRoleEnum UserRole { get; set; }

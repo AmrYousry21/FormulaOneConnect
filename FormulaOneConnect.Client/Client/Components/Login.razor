@@ -1,27 +1,34 @@
 ﻿@using FormulaOneConnect.Client.Services.Interfaces;
 @using FormulaOneConnect.Shared.DTOs;
+@inject NavigationManager NavManager
 
-<EditForm Model="loginDto" OnValidSubmit="Submit">
-    <DataAnnotationsValidator />
+<div class="row">
+    <div class="bg-light border p-4 rounded position-absolute top-50 start-50 translate-middle col-lg-4 col-md-8 col-sm-12">
+        <h3 class="badge bg-danger py-2 px-5 mb-4 w-100">Login</h3>
 
-    <div class="form-group">
-        <label for="email">Email</label>
-        <InputText id="email" @bind-Value="loginDto!.Email" class="form-control"></InputText>
-        <ValidationMessage For="() => loginDto.Email" />
+        <EditForm Model="loginDto" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
+
+            <div class="form-group mb-2">
+                <label for="email">Email</label>
+                <InputText id="email" @bind-Value="loginDto!.Email" class="form-control"></InputText>
+                <ValidationMessage For="() => loginDto.Email" />
+            </div>
+
+            <div class="form-group mb-5">
+                <label for="password">Password:</label>
+                <InputText id="password" @bind-Value="loginDto!.Password" class="form-control" type="password"></InputText>
+                <ValidationMessage For="() => loginDto.Password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="button" class="btn btn-primary" @onclick="Reset">Reset</button>
+        </EditForm>
     </div>
-
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <InputText id="password" @bind-Value="loginDto!.Password" class="form-control" type="password"></InputText>
-        <ValidationMessage For="() => loginDto.Password" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Login</button>
-    <button type="button" class="btn btn-primary" @onclick="Reset">Reset</button>
-</EditForm>
+</div>
 
 @code {
-    [Inject] private IAuthenticationService _authenticationService { get; set; } = default!;
+    [Inject] private IAuthenticationService _authenticationService { get; set; }
 
     private LoginDto? loginDto;
 
@@ -32,10 +39,10 @@
 
     private async Task Submit()
     {
-        var response = await _authenticationService.Login(loginDto);
-        if (response.IsSuccessStatusCode)
+        var result = await _authenticationService.Login(loginDto);
+        if (result.Success)
         {
-
+            NavManager.NavigateTo("/", true);
         }
     }
 

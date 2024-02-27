@@ -1,34 +1,85 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">FormulaOneConnect.Client</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿@using Blazored.LocalStorage;
+@if (IsUserAuthenticated)
+{
+    <div class="top-nav p-1">
+        <div>
+            <a href="/"><img src="/LogoSmall.png" style="width: 70px;"></a>
+            <a href="/News">News</a>
+            <a href="/">Standings</a>
+            <a href="/">Gaming</a>
+            <a href="/">Store</a>
+        </div>
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+            </svg>
+            <a class="ms-0" href="/Account">@UserName</a>
+            <a href="/" @onclick="Logout">Logout</a>
+        </div>
     </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
+}
+else
+{
+    <div class="top-nav p-1">
+        <div>
+            <a href="/"><img src="/LogoSmall.png" style="width: 70px;"></a>
+            <a href="/News">News</a>
+            <a href="/">Standings</a>
+            <a href="/">Gaming</a>
+            <a href="/">Store</a>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
+        <div>
+            <a href="/login">Login</a>
+            <a href="/Register">Register</a>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+    </div>
+}
 @code {
     private bool collapseNavMenu = true;
+
+    private bool IsUserAuthenticated { get; set; }
+    private string UserName { get; set; }
+
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private ILocalStorageService _localStorage { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        IsUserAuthenticated = authState.User.Identity.IsAuthenticated;
+        var user = authState.User;
+
+        if (IsUserAuthenticated)
+        {
+            // Retrieve username
+            UserName = user.Identity.Name;
+        }
+    }
+
+    private async void Logout()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            await ClearToken();
+
+            
+            _navigationManager.NavigateTo("/", true);
+        }
+
+    }
+
+    private async Task ClearToken()
+    {
+        // Clear the JWT token from local storage or any other storage mechanism
+        await _localStorage.RemoveItemAsync("authToken");
+        // Clear any other authentication-related data as needed
+    }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

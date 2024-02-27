@@ -21,24 +21,24 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto userInput)
+    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         //Validate input
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         //Check if email is already in use 
-        var userInDb = await _userRepository.GetUserByEmail(userInput.Email);
+        var userInDb = await _userRepository.GetUserByEmail(registerDto.Email);
         if (userInDb != null)
             return BadRequest("Email is already in use");
 
         var user = new User
         {
-            Email = userInput.Email,
-            Password = BCrypt.Net.BCrypt.HashPassword(userInput.Password),
-            FirstName = userInput.FirstName,
-            LastName = userInput.LastName,
-            UserRole = UserRoleEnum.Admin
+            Email = registerDto.Email,
+            Password = registerDto.Password,
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            UserRole = UserRoleEnum.Member
         };
 
         await _userRepository.AddUser(user);
@@ -59,7 +59,7 @@ public class UserController : ControllerBase
             return BadRequest("Email Not Registered");
 
         // Check if password is valid 
-        if (BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password) == false)
+        if (loginDto.Password != user.Password)
             return BadRequest("Invalid Password");
 
         // Generate JWT Token

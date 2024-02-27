@@ -2,5 +2,5 @@
 
 public interface IAuthenticationService
 {
-    string GenerateToken(Guid userId, string email, string userRole);
+    string GenerateToken(int userId, string email, string userRole);
 }

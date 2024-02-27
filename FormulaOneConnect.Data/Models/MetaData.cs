@@ -9,11 +9,6 @@ public class MetaData
     public DateTime CreatedAt { get; set; }
 
     [Required]
-    public Guid CreateUserId { get; set; }
-
-    [Required]
     public DateTime UpdatedAt { get; set; }
 
-    [Required]
-    public Guid UpdateUserId { get; set; }
 }

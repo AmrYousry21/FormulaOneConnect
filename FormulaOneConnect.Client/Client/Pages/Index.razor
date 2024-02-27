@@ -1,6 +1,137 @@
 ﻿@page "/"
+
 @using FormulaOneConnect.Client.Components
+@using FormulaOneConnect.Shared.Models
 
 <PageTitle>Index</PageTitle>
 
-<Login />
+@if (loading)
+{
+    <div class="loader position-absolute top-50 start-50"></div>
+}
+else
+{
+    <section class="position-relative z-3">
+        <img src="/Login-Banner.png" class="w-100 banner">
+    </section>
+    <section>
+        <div class="connector position-relative rounded mt-1" style="height:100px; background-color:#212529;">
+            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">News</h3>
+        </div>
+    </section>
+    <section class="my-3">
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                <div class="row">
+                    @for (int i = 0; i < 3; i++)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card" @onclick="() => NavigateToArticle(topStories[i].Url)" style="cursor: pointer;">
+                                <img class="card-img-top" src="@topStories[i].Image_url" alt="@topStories[i].Title">
+                                <div class="card-body">
+                                    <h4 class="card-title p-2">@topStories[i].Title</h4>
+                                    <p class="card-text p-2">@topStories[i].Description</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="connector position-relative rounded" style="height:100px; background-color:#212529;">
+            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">Driver Standings</h3>
+        </div>
+    </section>
+    <section class="my-3" style="background: #f9fafb;">
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                
+                <div class="row">
+                    @for (var i = 0; i < 10; i++)
+                    {
+                        <div class="standing-pill d-flex bg-white border border-1 rounded-pill mb-1 py-1 gap-4" style="height: fit-content;">
+                            <p class="m-0 p-0">@currentDriverStandings[i].Position</p>
+                            <p class="m-0 p-0">@currentDriverStandings[i].Driver.GivenName @currentDriverStandings[i].Driver.FamilyName</p>
+                            <p class="m-0 p-0">@currentDriverStandings[i].Constructors[0].Name</p>
+                            <p class="m-0 p-0 ms-auto">@currentDriverStandings[i].Points</p>
+                            <p class="m-0 p-0">
+                                <a href="@currentDriverStandings[i].Driver.Url" target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                                        <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
+                                    </svg>
+                                </a>
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="connector position-relative rounded" style="height:100px; background-color:#212529;">
+            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">Gaming</h3>
+        </div>
+    </section>
+    <section>
+        <div class="offset-md-2 col-md-8 position-relative">
+            <img src="/Gaming.png" alt="Image 1" class="z-2 section_img pt-3 w-100 h-100 start-0">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <h3 class="d-block p-2 w-100">F1 Connect Gaming</h3>
+                <button type="button" class="z-3 btn btn-primary btn-sm p-2 w-100">Browse All Gaming Leagues</button>
+            </div>
+        </div>
+    </section>
+
+    <Footer></Footer>
+}
+
+@code {
+    [Inject] private HttpClient _httpClient { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
+
+    private bool loading = true;
+    private bool loadingStandings = false;
+    private int standingsYear = DateTime.Now.Year - 1;
+    private List<TopStory> topStories = new();
+    private List<Standings> standings = new();
+    private List<DriverStanding> currentDriverStandings = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("api/News/TopStories");
+        if (topStoryResult != null) topStories = topStoryResult.Data;
+
+        await GetStandings(standingsYear);
+
+        loading = false;
+    }
+
+    public async Task YearChanged(ChangeEventArgs args)
+    {
+        var year = Int32.Parse(args.Value.ToString());
+        standingsYear = year;
+
+        await GetStandings(year);
+        StateHasChanged();
+    }
+
+    private async Task GetStandings(int year)
+    {
+        loadingStandings = true;
+
+        var standingResult = await _httpClient.GetFromJsonAsync<StandingResult>($"api/FormulaOne/Standings?year={year}");
+        if (standingResult != null) {
+            standings = standingResult.MRData?.StandingsTable?.StandingsLists;
+            currentDriverStandings = standings.First(x => x.Season == "2023").DriverStandings;
+        }
+
+        loadingStandings = false;
+    }
+
+    private void NavigateToArticle(string url)
+    {
+        _navigationManager.NavigateTo(url);
+    }
+}

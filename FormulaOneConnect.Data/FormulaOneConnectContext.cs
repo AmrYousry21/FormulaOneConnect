@@ -8,6 +8,11 @@ public class FormulaOneConnectContext : DbContext
 {
     private readonly IConfiguration _configuration;
 
+    public FormulaOneConnectContext()
+    {
+        
+    }
+
     public FormulaOneConnectContext(DbContextOptions options, IConfiguration configuration) : base(options)
     {
         _configuration = configuration;
@@ -18,7 +23,7 @@ public class FormulaOneConnectContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL(_configuration.GetConnectionString("FormulaOneConnectConnectionString"));
+        optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=formulaoneconnect;User=root;Password=Opshacomp123@;old guids=true;");
     }
 
 }

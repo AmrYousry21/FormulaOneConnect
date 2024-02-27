@@ -25,13 +25,13 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public async Task<User?> GetUser(Guid id)
+    public async Task<User> GetUser(int id)
     {
         return await _ctx.Users
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<User?> GetUserByEmail(string email)
+    public async Task<User> GetUserByEmail(string email)
     {
         return await _ctx.Users
             .FirstOrDefaultAsync(x => x.Email == email);

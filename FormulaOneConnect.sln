@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOneConnect.API", "FormulaOneConnect.API\FormulaOneConnect.API.csproj", "{87E35F1F-0795-4A75-98F6-040BBAB58183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaOneConnect.API", "FormulaOneConnect.API\FormulaOneConnect.API.csproj", "{87E35F1F-0795-4A75-98F6-040BBAB58183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOneConnect.Data", "FormulaOneConnect.Data\FormulaOneConnect.Data.csproj", "{D053F256-1934-4158-8D21-7867BE435576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaOneConnect.Data", "FormulaOneConnect.Data\FormulaOneConnect.Data.csproj", "{D053F256-1934-4158-8D21-7867BE435576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOneConnect.Shared", "FormulaOneConnect.Shared\FormulaOneConnect.Shared.csproj", "{689993B0-A5F6-4148-A016-5E0478EB8366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaOneConnect.Shared", "FormulaOneConnect.Shared\FormulaOneConnect.Shared.csproj", "{689993B0-A5F6-4148-A016-5E0478EB8366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOneConnect.Client", "FormulaOneConnect.Client\Client\FormulaOneConnect.Client.csproj", "{7D25D565-ECD8-448D-8789-8FCCA6094F5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormulaOneConnect.Client", "FormulaOneConnect.Client\Client\FormulaOneConnect.Client.csproj", "{7D25D565-ECD8-448D-8789-8FCCA6094F5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
