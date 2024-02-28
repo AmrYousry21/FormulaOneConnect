@@ -1,5 +1,6 @@
 ﻿using FormulaOneConnect.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Policy;
 
 namespace FormulaOneConnect.API.Controllers.V1
 {
@@ -18,18 +19,32 @@ namespace FormulaOneConnect.API.Controllers.V1
         public async Task<IActionResult> GetDrivers([FromQuery] int year)
         {
             var endpoint = $"http://ergast.com/api/f1/{year}/drivers.json";
-            var result = await _httpClient.GetFromJsonAsync<DriverResult>(endpoint);
+            
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(endpoint)
+            };
 
-            return Ok(result);
+            var result = await _httpClient.SendAsync(request);
+
+            return Ok(await result.Content.ReadAsStringAsync());
         }
 
         [HttpGet("Standings")]
         public async Task<IActionResult> GetStandingsForYear([FromQuery] int year)
         {
             var endpoint = $"http://ergast.com/api/f1/{year}/driverStandings.json";
-            var result = await _httpClient.GetFromJsonAsync<StandingResult>(endpoint);
+            
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(endpoint)
+            };
 
-            return Ok(result);
+            var result = await _httpClient.SendAsync(request);
+
+            return Ok(await result.Content.ReadAsStringAsync());
         }
 
     }

@@ -34,9 +34,15 @@ public class NewsController : ControllerBase
         url.Append("search_fields=title%2Cdescription&");
         url.Append("locale=us");
 
-        var result = await _httpClient.GetFromJsonAsync<TopStoryResult>(url.ToString());
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url.ToString())
+        };
 
-        return Ok(result);
+        var result = await _httpClient.SendAsync(request);
+
+        return Ok( await result.Content.ReadAsStringAsync());
 
     }
 }
