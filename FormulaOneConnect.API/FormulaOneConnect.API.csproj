@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.27" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.27">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FormulaOneConnect.Client\Client\FormulaOneConnect.Client.csproj" />
     <ProjectReference Include="..\FormulaOneConnect.Data\FormulaOneConnect.Data.csproj" />
     <ProjectReference Include="..\FormulaOneConnect.Shared\FormulaOneConnect.Shared.csproj" />
   </ItemGroup>

@@ -14,6 +14,8 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 
 // Add repos to the container
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -44,16 +46,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddCors(policy =>
-{
-    policy.AddPolicy("F1CorsPolicy", policy =>
-    {
-        policy
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin();
-    });
-});
 
 // Configure the HTTP request pipeline.
 
@@ -62,18 +54,24 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseWebAssemblyDebugging();
 }
 else
 {
-    app.UseHttpsRedirection();
+    app.UseHsts();
 }
 
-app.UseCors("F1CorsPolicy");
+app.UseHttpsRedirection();
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers();
+    endpoints.MapFallbackToFile("Index.html");
+});
 
 app.Run();
