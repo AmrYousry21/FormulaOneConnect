@@ -1,1 +1,1 @@
-web: cd app/FormulaOneConnect.Client && dotnet serve --dir ../wwwroot --port $PORT
+web: dotnet serve --dir app/heroku_output/wwwroot --port $PORT
