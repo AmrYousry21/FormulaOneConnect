@@ -1,0 +1,1 @@
+web: cd app/FormulaOneConnect.Client && dotnet serve --dir wwwroot --port $PORT
