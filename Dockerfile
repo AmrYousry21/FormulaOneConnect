@@ -6,15 +6,15 @@ EXPOSE 80
 # Use the SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["FormulaOneConnect.Client.csproj", "./"]
-RUN dotnet restore "./FormulaOneConnect.Client.csproj"
+COPY ["FormulaOneConnect/FormulaOneConnect.Client.csproj", "./"]
+RUN dotnet restore "./FormulaOneConnect/FormulaOneConnect.Client.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "FormulaOneConnect.Client.csproj" -c Release -o /app/build
+WORKDIR "/src"
+RUN dotnet build "FormulaOneConnect/FormulaOneConnect.Client.csproj" -c Release -o /app/build
 
 # Publish the app
 FROM build AS publish
-RUN dotnet publish "FormulaOneConnect.Client.csproj" -c Release -o /app/publish
+RUN dotnet publish "FormulaOneConnect/FormulaOneConnect.Client.csproj" -c Release -o /app/publish
 
 # Final stage/image
 FROM base AS final
