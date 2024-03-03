@@ -7,9 +7,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["FormulaOneConnect.Client/FormulaOneConnect.Client.csproj", "./"]
-COPY ["FormulaOneConnect.Shared/FormulaOneConnect.Shared.csproj", "./"]
+COPY ["FormulaOneConnect.Shared", "./"]
 RUN dotnet restore "FormulaOneConnect.Client.csproj"
-RUN dotnet restore "FormulaOneConnect.Shared.csproj"
 COPY . .
 WORKDIR "/src"
 RUN dotnet build "FormulaOneConnect.Client.csproj" -c Release -o /app/build
