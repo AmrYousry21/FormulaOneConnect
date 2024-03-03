@@ -9,6 +9,7 @@ WORKDIR /src
 COPY ["FormulaOneConnect.Client/FormulaOneConnect.Client.csproj", "./"]
 COPY ["FormulaOneConnect.Shared/FormulaOneConnect.Shared.csproj", "./"]
 RUN dotnet restore "FormulaOneConnect.Client.csproj"
+RUN dotnet restore "FormulaOneConnect.Shared.csproj"
 COPY . .
 WORKDIR "/src"
 RUN dotnet build "FormulaOneConnect.Client.csproj" -c Release -o /app/build
