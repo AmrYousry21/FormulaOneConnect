@@ -3,7 +3,6 @@ using FormulaOneConnect.Client.Services.Interfaces;
 using FormulaOneConnect.Shared.DTOs;
 using FormulaOneConnect.Shared.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using MySqlX.XDevAPI;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 

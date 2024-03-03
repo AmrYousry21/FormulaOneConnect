@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FormulaOneConnect.Data.Migrations
 {
     [DbContext(typeof(FormulaOneConnectContext))]
-    [Migration("20240222214023_RemovedGuids")]
-    partial class RemovedGuids
+    [Migration("20240228224928_InitialRemoteSetup")]
+    partial class InitialRemoteSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

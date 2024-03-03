@@ -23,7 +23,7 @@ public class FormulaOneConnectContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=formulaoneconnect;User=root;Password=Opshacomp123@;old guids=true;");
+        optionsBuilder.UseMySQL("Server=us-cluster-east-01.k8s.cleardb.net;Port=3306;Database=formulaoneconnect;User=bead8af71a59a1;Password=5064e8ca;");
     }
 
 }

@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace FormulaOneConnect.Data.Migrations
 {
-    public partial class RemovedGuids : Migration
+    public partial class InitialRemoteSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

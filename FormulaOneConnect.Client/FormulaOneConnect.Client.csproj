@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FormulaOneConnect.Data\FormulaOneConnect.Data.csproj" />
-    <ProjectReference Include="..\..\FormulaOneConnect.Shared\FormulaOneConnect.Shared.csproj" />
+    <ProjectReference Include="..\FormulaOneConnect.Shared\FormulaOneConnect.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
