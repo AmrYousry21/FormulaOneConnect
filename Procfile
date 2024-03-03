@@ -1,1 +1,1 @@
-web: cd /app/heroku_output && ./wwwroot
+web: dotnet cd /app/heroku_output && ./wwwroot
