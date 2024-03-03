@@ -1,1 +1,1 @@
-web: dotnet serve --dir app/heroku_output/wwwroot --port $PORT
+web: dotnet FormulaOneConnect.Client.dll --urls=http://0.0.0.0:$PORT
