@@ -1,1 +1,1 @@
-cd /app/heroku_output && ./wwwroot
+web: cd /app/heroku_output && ./wwwroot
