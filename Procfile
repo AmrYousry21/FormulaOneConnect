@@ -1,1 +1,0 @@
-web: dotnet FormulaOneConnect.Client.dll --urls=http://0.0.0.0:$PORT
