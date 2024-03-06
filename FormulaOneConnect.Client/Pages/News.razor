@@ -18,7 +18,7 @@ else
                     @foreach (var story in topStories)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-4">
-                            <div class="card" @onclick="() => NavigateToArticle(story.Url)" style="cursor: pointer;">
+                            <div class="card" @onclick="() => NavigateToArticle(story.Url)" style="cursor: pointer; height: 550px;">
                                 <img class="card-img-top" src="@story.Image_url" alt="@story.Title">
                                 <div class="card-body">
                                     <h4 class="card-title p-2">@story.Title</h4>
@@ -42,6 +42,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        loading = true;
+
         var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("News/TopStories");
         if (topStoryResult != null) topStories = topStoryResult.Data;
 

@@ -14,6 +14,8 @@ var configuration = builder.Configuration;
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://formulaoneconnect-e0b29db0c4b9.herokuapp.com/") });
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<IStandingsService, StandingsService>();
+builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddAuthorizationCore();

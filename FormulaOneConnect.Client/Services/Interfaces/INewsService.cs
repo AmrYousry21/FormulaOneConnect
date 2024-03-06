@@ -1,0 +1,9 @@
+﻿using FormulaOneConnect.Shared.Models;
+
+namespace FormulaOneConnect.Client.Services.Interfaces
+{
+    public interface INewsService
+    {
+        Task<TopStoryResult> GetTopStories();
+    }
+}

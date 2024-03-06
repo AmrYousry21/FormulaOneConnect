@@ -62,21 +62,21 @@
 }*/
 
 
-.top-nav {
+/*.top-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background: whitesmoke;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
     /*    background: rgb(206,17,38);
     background: linear-gradient(180deg, rgba(206,17,38,1) 0%, rgba(0,0,0,1) 100%);*/
-    box-sizing: border-box;
+    /*box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000; /* Ensures it's above other content */
-}
+    z-index: 1000;*/ /* Ensures it's above other content */
+/*}
 
     .top-nav a {
         color: black;
@@ -86,5 +86,7 @@
     }
 
         .top-nav a:hover {
-            color: #ffa500; /* Change color on hover */
-        }
+            color: #ffa500;*/ /* Change color on hover */
+        /*}*/
+
+

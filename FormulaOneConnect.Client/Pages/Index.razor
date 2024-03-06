@@ -2,6 +2,7 @@
 
 @using FormulaOneConnect.Client.Components
 @using System.Net.Http;
+@using FormulaOneConnect.Client.Services.Interfaces;
 @using FormulaOneConnect.Shared.Models;
 
 <PageTitle>Index</PageTitle>
@@ -12,17 +13,17 @@
 }
 else
 {
-    <section class="position-relative z-3">
+    <section class="position-relative z-3 offset-md-2 col-md-8">
         <img src="/Login-Banner.png" class="w-100 banner">
-    </section>
-    <section>
-        <div class="connector position-relative rounded mt-1" style="height:100px; background-color:#212529;">
-            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">News</h3>
-        </div>
     </section>
     <section class="my-3">
         <div class="row">
             <div class="offset-md-2 col-md-8">
+
+                <div class="text-center mb-3">
+                    <img src="/News-Header.png">
+                </div>
+
                 <div class="row">
                     @for (int i = 0; i < 3; i++)
                     {
@@ -40,14 +41,13 @@ else
             </div>
         </div>
     </section>
-    <section>
-        <div class="connector position-relative rounded" style="height:100px; background-color:#212529;">
-            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">Driver Standings</h3>
-        </div>
-    </section>
-    <section class="my-3" style="background: #f9fafb;">
+    <section class="my-3">
         <div class="row">
             <div class="offset-md-2 col-md-8">
+
+                <div class="text-center mb-3">
+                    <img src="/Standings-Header.png">
+                </div>
                 
                 <div class="row">
                     @for (var i = 0; i < 10; i++)
@@ -71,12 +71,10 @@ else
         </div>
     </section>
     <section>
-        <div class="connector position-relative rounded" style="height:100px; background-color:#212529;">
-            <h3 class="standing-title my-2 position-absolute top-50 start-50 translate-middle rounded-pill ps-4 pe-4 pt-1 pb-1" style="background-color:#ef192e;">Gaming</h3>
-        </div>
-    </section>
-    <section>
         <div class="offset-md-2 col-md-8 position-relative">
+            <div class="text-center mb-3">
+                <img src="/Gaming-Header.png">
+            </div>
             <img src="/Gaming.png" alt="Image 1" class="z-2 section_img pt-3 w-100 h-100 start-0">
             <div class="position-absolute top-50 start-50 translate-middle">
                 <h3 class="d-block p-2 w-100">F1 Connect Gaming</h3>
@@ -91,44 +89,31 @@ else
 @code {
     [Inject] private NavigationManager _navigationManager { get; set; }
     [Inject] private HttpClient _httpClient { get; set; }
+    [Inject] private IStandingsService _standingsService { get; set; }
+    [Inject] private INewsService _newsService { get; set; }
+
 
     private bool loading = true;
-    private bool loadingStandings = false;
-    private int standingsYear = DateTime.Now.Year - 1;
+    public int standingsYear = DateTime.Now.Year;
     private List<TopStory> topStories = new();
     private List<Standings> standings = new();
     private List<DriverStanding> currentDriverStandings = new();
 
     protected override async Task OnInitializedAsync()
-    {            
-        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("News/TopStories");
+    {
+        loading = true;
+        
+        var topStoryResult = await _newsService.GetTopStories();
         if (topStoryResult != null) topStories = topStoryResult.Data;
 
-        await GetStandings(standingsYear);
-
-        loading = false;
-    }
-
-    public async Task YearChanged(ChangeEventArgs args)
-    {
-        var year = Int32.Parse(args.Value.ToString());
-        standingsYear = year;
-
-        await GetStandings(year);
-        StateHasChanged();
-    }
-
-    private async Task GetStandings(int year)
-    {
-        loadingStandings = true;
-
-        var standingResult = await _httpClient.GetFromJsonAsync<StandingResult>($"api/FormulaOne/Standings?year={year}");
-        if (standingResult != null) {
+        var standingResult = await _standingsService.GetStandings(standingsYear);
+        if (standingResult != null)
+        {
             standings = standingResult.MRData?.StandingsTable?.StandingsLists;
-            currentDriverStandings = standings.First(x => x.Season == "2023").DriverStandings;
+            currentDriverStandings = standings.First(x => x.Season == standingsYear.ToString()).DriverStandings;
         }
 
-        loadingStandings = false;
+        loading = false;
     }
 
     private void NavigateToArticle(string url)
