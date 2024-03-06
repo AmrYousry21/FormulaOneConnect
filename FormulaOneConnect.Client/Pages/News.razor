@@ -1,6 +1,7 @@
 ﻿@page "/News"
 
 @using FormulaOneConnect.Client.Components
+@using FormulaOneConnect.Client.Services.Interfaces;
 @using FormulaOneConnect.Shared.Models
 
 <PageTitle>News</PageTitle>
@@ -36,6 +37,7 @@ else
 @code {
     [Inject] private HttpClient _httpClient { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private INewsService _newsService { get; set; }
 
     private bool loading = true;
     private List<TopStory> topStories = new();
@@ -44,7 +46,7 @@ else
     {
         loading = true;
 
-        var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("News/TopStories");
+        var topStoryResult = await _newsService.GetTopStories();
         if (topStoryResult != null) topStories = topStoryResult.Data;
 
 
