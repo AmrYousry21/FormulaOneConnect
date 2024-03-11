@@ -19,5 +19,19 @@ namespace FormulaOneConnect.Client.Services
 
             return standingResult;
         }
+
+        public async Task<DriverResult> GetDrivers(int year)
+        {
+            var driverResult = await _httpClient.GetFromJsonAsync<DriverResult>($"api/FormulaOne/Drivers?year={year}");
+
+            return driverResult;
+        }
+
+        public async Task<CircutResult> GetTracks(int year)
+        {
+            var trackResult = await _httpClient.GetFromJsonAsync<CircutResult>($"api/FormulaOne/Circuits?year={year}");
+
+            return trackResult;
+        }
     }
 }

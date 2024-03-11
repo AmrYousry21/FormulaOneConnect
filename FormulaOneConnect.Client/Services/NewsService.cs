@@ -13,9 +13,23 @@ namespace FormulaOneConnect.Client.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<TopStoryResult> GetTopStories()
+
+        public async Task<NewsResult> GetAllNews(string search = null)
         {
-            var topStoryResult = await _httpClient.GetFromJsonAsync<TopStoryResult>("News/TopStories");
+            var url = "News/AllNews?search=Formula%20One_";
+            if (search != null) url += search;
+
+            var newsResult = await _httpClient.GetFromJsonAsync<NewsResult>(url);
+
+            return newsResult;
+        }
+
+        public async Task<NewsResult> GetTopStories(string search = null)
+        {
+            var url = "News/TopStories?search=Formula%20One_";
+            if (search != null) url += search;
+
+            var topStoryResult = await _httpClient.GetFromJsonAsync<NewsResult>(url);
 
             return topStoryResult;
         }

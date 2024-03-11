@@ -88,14 +88,12 @@ else
 
 @code {
     [Inject] private NavigationManager _navigationManager { get; set; }
-    [Inject] private HttpClient _httpClient { get; set; }
     [Inject] private IStandingsService _standingsService { get; set; }
     [Inject] private INewsService _newsService { get; set; }
 
-
     private bool loading = true;
     public int standingsYear = DateTime.Now.Year;
-    private List<TopStory> topStories = new();
+    private List<FormulaOneConnect.Shared.Models.News> topStories = new();
     private List<Standings> standings = new();
     private List<DriverStanding> currentDriverStandings = new();
 

@@ -12,11 +12,112 @@
 }
 else
 {
+    <section class="my-3 offset-md-2 col-md-8">
+        <section class="my-3">
+            <div class="row">
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-primary " data-toggle="button" aria-pressed="false" autocomplete="off" @onclick="() => OnClickNews(NewsType.All)"
+                            disabled="@allNewsSelected">
+                        All F1 News
+                    </button>
+                    <button type="button" class="btn btn-outline-primary " data-toggle="button" aria-pressed="false" autocomplete="off" @onclick="() => OnClickNews(NewsType.Top)"
+                            disabled="@(!allNewsSelected)">
+                        Top Stories
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-3">
+            <div class="row">
+                <div class="col-md-3 ms-1">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle " type="button" id="dropdownMenuButton0" data-bs-toggle="dropdown" aria-expanded="false">
+                            Year
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton0">
+                            @for (int i = DateTime.Now.Year; i > 1980; i--)
+                            {
+                                int year = i;
+                                <li><a class="dropdown-item" @onclick="() => HandleYearSelection(year)">@i</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-3">
+            <div class="row justify-content-start">
+                @if (!loadingNews)
+                {
+                    <div class="col-md-1 col-sm-12 mb-1 ms-1">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Drivers
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                @foreach (var driver in drivers)
+                                {
+                                    <li><a class="dropdown-item" @onclick="@(() => AddFilter($"{driver.GivenName} {driver.FamilyName}"))">@driver.GivenName @driver.FamilyName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-12 mb-1">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle " type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                Teams
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                @foreach (var team in teams)
+                                {
+                                    <li><a class="dropdown-item" @onclick="@(() => AddFilter(team))">@team</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-12 mb-1">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle " type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tracks
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                @foreach (var track in tracks)
+                                {
+                                    <li><a class="dropdown-item" @onclick="@(() => AddFilter(track.CircuitName))">@track.CircuitName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="loader ms-3"></div>
+                }
+            </div>
+
+            <div class="row ms-1 mb-2 d-flex">
+                @foreach (var filter in filters)
+                {
+                    <button class="btn btn-light filterAdd me-2" style="width:fit-content" disabled><i class="fa fa-plus"></i> @filter</button>
+                }
+
+                @if (filters.Any())
+                {
+                    <button class="btn btn-outline-primary  col-md-1 col-sm-12 mt-3 ms-auto" @onclick="SubmitFilters">Submit</button>
+                }
+
+                <button class="btn btn-outline-primary  col-md-1 col-sm-12 mt-3 ms-2 @(filters.Any() ? "" : "ms-auto")" @onclick="ResetFilters">Reset</button>
+            </div>
+        </section>
+    </section>
+
     <section class="my-3">
         <div class="row">
             <div class="offset-md-2 col-md-8">
                 <div class="row">
-                    @foreach (var story in topStories)
+                    @foreach (var story in news)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-12 mt-4 pt-4">
                             <div class="card" @onclick="() => NavigateToArticle(story.Url)" style="cursor: pointer; height: 550px;">
@@ -35,22 +136,79 @@ else
 }
 
 @code {
-    [Inject] private HttpClient _httpClient { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
     [Inject] private INewsService _newsService { get; set; }
+    [Inject] private IStandingsService _standingService { get; set; }
 
     private bool loading = true;
-    private List<TopStory> topStories = new();
+    private bool loadingNews;
+    private bool allNewsSelected = true;
+    private int selectedYear;
+    private List<string> teams = new();
+    private List<string> teamsDropDown = new();
+    private List<string> filters = new();
+    private List<FormulaOneConnect.Shared.Models.News> news = new();
+    private List<Driver> drivers = new();
+    private List<Circuit> tracks = new();
+    private List<Standings> standings = new();
+
+    public enum NewsType
+    {
+        All,
+        Top
+    }
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
 
-        var topStoryResult = await _newsService.GetTopStories();
-        if (topStoryResult != null) topStories = topStoryResult.Data;
+        var topStoryResult = await _newsService.GetAllNews();
+        if (topStoryResult != null) news = topStoryResult.Data;
 
+        var driversResult = await _standingService.GetDrivers(DateTime.Now.Year);
+        if (driversResult != null) drivers = driversResult.MRData.DriverTable.Drivers;
+
+        var teamsResult = await _standingService.GetStandings(DateTime.Now.Year);
+        if (teamsResult != null)
+        {
+            standings = teamsResult.MRData?.StandingsTable?.StandingsLists;
+            teams = standings
+                .First(x => x.Season == DateTime.Now.Year.ToString()).DriverStandings
+                .SelectMany(x => x.Constructors).Select(c => c.Name)
+                .Distinct()
+                .ToList();
+        }
+
+        var tracksResult = await _standingService.GetTracks(DateTime.Now.Year);
+        if (tracksResult != null)
+        {
+            tracks = tracksResult.MRData.CircuitTable.Circuits.ToList();
+        }
 
         loading = false;
+    }
+
+    private async Task OnClickNews(NewsType newsType)
+    {
+        switch (newsType)
+        {
+            case NewsType.All:
+
+                allNewsSelected = true;
+                var newsResult = await _newsService.GetAllNews();
+                if (newsResult != null) news = newsResult.Data;
+                break;
+
+            case NewsType.Top:
+
+                allNewsSelected = false;
+                var topStoryResult = await _newsService.GetTopStories();
+                if (topStoryResult != null) news = topStoryResult.Data;
+                break;
+        }
+
+        filters.Clear();
+        StateHasChanged();
     }
 
     private void NavigateToArticle(string url)
@@ -58,4 +216,69 @@ else
         _navigationManager.NavigateTo(url);
     }
 
+    private async Task HandleYearSelection(int year)
+    {
+        loadingNews = true;
+        filters.Clear();
+
+        var driversResult = await _standingService.GetDrivers(year);
+        if (driversResult != null) drivers = driversResult.MRData.DriverTable.Drivers;
+
+        var teamsResult = await _standingService.GetStandings(year);
+        if (teamsResult != null)
+        {
+            standings = teamsResult.MRData?.StandingsTable?.StandingsLists;
+            teams = standings
+                .First(x => x.Season == year.ToString()).DriverStandings
+                .SelectMany(x => x.Constructors).Select(c => c.Name)
+                .Distinct()
+                .ToList();
+        }
+
+        var tracksResult = await _standingService.GetTracks(year);
+        if (tracksResult != null)
+        {
+            tracks = tracksResult.MRData.CircuitTable.Circuits.ToList();
+        }
+
+        loadingNews = false;
+    }
+
+    private async Task SubmitFilters()
+    {
+        loading = true;
+
+        if (allNewsSelected == false)
+        {
+            var search = filters.Any() ? string.Join("_", filters) : null;
+            var topStoryResult = await _newsService.GetTopStories(search);
+            if (topStoryResult != null) news = topStoryResult.Data;
+        }
+        else
+        {
+            var search = filters.Any() ? string.Join("_", filters) : null;
+            var newsResult = await _newsService.GetAllNews(search);
+            if (newsResult != null) news = newsResult.Data;
+        }
+
+        StateHasChanged();
+
+        loading = false;
+    }
+
+    private async Task ResetFilters()
+    {
+        loading = true;
+
+        filters.Clear();
+        var topStoryResult = await _newsService.GetAllNews();
+        if (topStoryResult != null) news = topStoryResult.Data;
+
+        loading = false;
+    }
+
+    private void AddFilter(string filter)
+    {
+        if (!filters.Contains(filter)) filters.Add(filter);
+    }
 }

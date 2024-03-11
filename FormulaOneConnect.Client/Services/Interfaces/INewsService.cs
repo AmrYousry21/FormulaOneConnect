@@ -4,6 +4,7 @@ namespace FormulaOneConnect.Client.Services.Interfaces
 {
     public interface INewsService
     {
-        Task<TopStoryResult> GetTopStories();
+        Task<NewsResult> GetTopStories(string search = null);
+        Task<NewsResult> GetAllNews(string search = null);
     }
 }
