@@ -94,21 +94,21 @@ else
     private bool loading = true;
     public int standingsYear = DateTime.Now.Year;
     private List<FormulaOneConnect.Shared.Models.News> topStories = new();
-    private List<Standings> standings = new();
+    private List<StandingsList> standings = new();
     private List<DriverStanding> currentDriverStandings = new();
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-        
+
         var topStoryResult = await _newsService.GetTopStories();
         if (topStoryResult != null) topStories = topStoryResult.Data;
 
-        var standingResult = await _standingsService.GetStandings(standingsYear);
+        var standingResult = await _standingsService.GetDriverStandings(standingsYear);
         if (standingResult != null)
         {
             standings = standingResult.MRData?.StandingsTable?.StandingsLists;
-            currentDriverStandings = standings.First(x => x.Season == standingsYear.ToString()).DriverStandings;
+            currentDriverStandings = standings.SelectMany(x => x.DriverStandings).ToList();
         }
 
         loading = false;

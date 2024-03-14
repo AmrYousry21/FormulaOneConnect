@@ -13,9 +13,16 @@ namespace FormulaOneConnect.Client.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<StandingResult> GetStandings(int year)
+        public async Task<StandingResult> GetDriverStandings(int year)
         {
-            var standingResult = await _httpClient.GetFromJsonAsync<StandingResult>($"api/FormulaOne/Standings?year={year}");
+            var standingResult = await _httpClient.GetFromJsonAsync<StandingResult>($"api/FormulaOne/DriversStandings?year={year}");
+
+            return standingResult;
+        }
+
+        public async Task<StandingResult> GetConstructorsStandings(int year)
+        {
+            var standingResult = await _httpClient.GetFromJsonAsync<StandingResult>($"api/FormulaOne/ConstructorsStandings?year={year}");
 
             return standingResult;
         }

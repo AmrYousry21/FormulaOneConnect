@@ -150,7 +150,7 @@ else
     private List<FormulaOneConnect.Shared.Models.News> news = new();
     private List<Driver> drivers = new();
     private List<Circuit> tracks = new();
-    private List<Standings> standings = new();
+    private List<StandingsList> standings = new();
 
     public enum NewsType
     {
@@ -168,15 +168,16 @@ else
         var driversResult = await _standingService.GetDrivers(DateTime.Now.Year);
         if (driversResult != null) drivers = driversResult.MRData.DriverTable.Drivers;
 
-        var teamsResult = await _standingService.GetStandings(DateTime.Now.Year);
+        var teamsResult = await _standingService.GetDriverStandings(DateTime.Now.Year);
         if (teamsResult != null)
         {
             standings = teamsResult.MRData?.StandingsTable?.StandingsLists;
             teams = standings
-                .First(x => x.Season == DateTime.Now.Year.ToString()).DriverStandings
-                .SelectMany(x => x.Constructors).Select(c => c.Name)
-                .Distinct()
-                .ToList();
+            .SelectMany(x => x.DriverStandings)
+            .SelectMany(x => x.Constructors)
+            .Select(c => c.Name)
+            .Distinct()
+            .ToList();
         }
 
         var tracksResult = await _standingService.GetTracks(DateTime.Now.Year);
@@ -224,15 +225,16 @@ else
         var driversResult = await _standingService.GetDrivers(year);
         if (driversResult != null) drivers = driversResult.MRData.DriverTable.Drivers;
 
-        var teamsResult = await _standingService.GetStandings(year);
+        var teamsResult = await _standingService.GetDriverStandings(year);
         if (teamsResult != null)
         {
             standings = teamsResult.MRData?.StandingsTable?.StandingsLists;
             teams = standings
-                .First(x => x.Season == year.ToString()).DriverStandings
-                .SelectMany(x => x.Constructors).Select(c => c.Name)
-                .Distinct()
-                .ToList();
+            .SelectMany(x => x.DriverStandings)
+            .SelectMany(x => x.Constructors)
+            .Select(c => c.Name)
+            .Distinct()
+            .ToList();
         }
 
         var tracksResult = await _standingService.GetTracks(year);
